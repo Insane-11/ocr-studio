@@ -3,4 +3,3 @@ pytesseract>=0.3.10
 pdf2image>=1.17.0
 Pillow>=10.0.0
 huggingface-hub>=0.24.0
-pyaudioop>=0.3.0
