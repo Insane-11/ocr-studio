@@ -30,7 +30,7 @@ Gradio · Tesseract (`pytesseract`) · `pdf2image` (Poppler) · `huggingface-hub
 System deps (Tesseract + Poppler) — see `https://github.com/UB-Mannheim/tesseract/wiki` (Windows) or `brew install tesseract poppler` (macOS) or `apt install tesseract-ocr poppler-utils` (Linux).
 
 ```bash
-git clone https://github.com/<you>/ocr-studio.git
+git clone https://github.com/Insane-11/ocr-studio.git
 cd ocr-studio
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
@@ -51,7 +51,7 @@ Get a free token at `https://huggingface.co/settings/tokens` (Read scope is enou
 2. Push:
 
 ```bash
-git remote add space https://huggingface.co/spaces/<you>/ocr-studio
+git remote add space https://huggingface.co/spaces/Insane-11/ocr-studio
 git push space main
 ```
 
@@ -60,7 +60,7 @@ git push space main
    - Value: `hf_xxxxxxxxxxxxxxxxxxxx`
    - Visibility: can be hidden
 
-4. Live URL: `https://huggingface.co/spaces/<you>/ocr-studio`
+4. Live URL: [`https://huggingface.co/spaces/Insane-11/ocr-studio`](https://huggingface.co/spaces/Insane-11/ocr-studio) (direct: [`https://insane-11-ocr-studio.hf.space`](https://insane-11-ocr-studio.hf.space))
 
 ## Notes
 
