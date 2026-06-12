@@ -1,6 +1,6 @@
 ---
 title: OCR Studio
-emoji: 📄
+emoji: 🔍
 colorFrom: indigo
 colorTo: blue
 sdk: docker
@@ -8,7 +8,7 @@ app_port: 7860
 app_file: app.py
 pinned: false
 license: mit
-short_description: OCR, vision-LLM, and text-LLM cleanup. No paid APIs.
+short_description: Extract text via OCR, vision-LLM & LLM cleanup.
 ---
 
 <div align="center">
