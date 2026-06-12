@@ -77,6 +77,57 @@ Three OCR modes in one sleek interface — from fast offline Tesseract to vision
 
 ---
 
+## 📁 Project Structure
+
+```
+ocr-studio/
+├── app.py              # Main Gradio app — UI layout, 6 processing functions, monkey-patches
+├── requirements.txt    # Python deps (gradio, pytesseract, pdf2image, huggingface-hub, etc.)
+├── Dockerfile          # Python 3.12-slim + Tesseract (12 langs) + Poppler
+├── README.md           # This file
+├── packages.txt        # Tesseract lang packages reference (ignored in Docker mode)
+└── .gitignore
+```
+
+---
+
+## 🔄 OCR Workflow
+
+```
+                      ┌──────────────────────────┐
+                      │   Upload File             │
+                      │  (image or PDF)           │
+                      └────────────┬─────────────┘
+                                   │
+                    ┌──────────────┼──────────────┐
+                    ▼              ▼              ▼
+        ┌──────────────────┐ ┌──────────┐ ┌──────────────┐
+        │  Tab 1           │ │ Tab 2    │ │ Tab 3        │
+        │  Quick OCR       │ │ Smart    │ │ Cleanup &    │
+        │  (Tesseract)     │ │ Extract  │ │ Structure    │
+        │                  │ │ (Vision  │ │ (Text LLM)   │
+        │  12 langs        │ │  LLM)    │ │              │
+        │  DPI / PSM       │ │          │ │ ┌────────┐  │
+        │  Multi-page PDF  │ │ Custom   │ │ │ Clean  │  │
+        └────────┬─────────┘ │ prompt   │ │ │ mode   │  │
+                 ▼           │          │ │ └────────┘  │
+        ┌────────────────┐  │ Page 1   │ │ ┌────────┐  │
+        │ Text output    │  │ only     │ │ │Struct. │  │
+        │ + stats + .txt │  │          │ │ │ mode   │  │
+        └────────────────┘  │ No token │ │ └────────┘  │
+                            └────┬─────┘ │ 4 schemas   │
+                                 ▼        │            │
+                        ┌──────────────┐ │ JSON valid. │
+                        │ Text output  │ └──────┬───────┘
+                        │ + stats+.txt │        ▼
+                        └──────┬───────┘ ┌──────────────┐
+                               │ send    │ JSON / text  │
+                               └────────►│ + stats+downl│
+                                          └──────────────┘
+```
+
+> 💡 **Tab 2 → Tab 3 pipeline:** Click "Send to Cleanup & Structure →" to pipe vision LLM output straight into Tab 3 for polishing or JSON extraction.
+
 ## 🏗️ Stack
 
 ```
