@@ -34,38 +34,40 @@ short_description: OCR, vision-LLM, and text-LLM cleanup. No paid APIs.
 
 ## ✨ Features
 
-### 🔹 Tab 1 — Quick OCR (Tesseract)
-| Feature | Detail |
-|---------|--------|
-| **Input** | Images (PNG, JPG, BMP, TIFF, WebP) & multi-page PDFs |
-| **Languages** | 12 supported — EN, HI, ES, FR, DE, PT, IT, ZH, JA, KO, AR, RU |
-| **Controls** | DPI slider (150–600) & PSM mode (0–13) for fine-tuning |
-| **Output** | Copyable text, live stats (pages/chars/words), `.txt` download |
-| **Token?** | ❌ Not required — works fully offline |
+### 📷 Tab 1 — Quick OCR (Tesseract)
+| | |
+|---|---|
+| 🖼️ **Input** | Images (PNG, JPG, BMP, TIFF, WebP) & multi-page PDFs |
+| 🌐 **Languages** | 12 — EN, HI, ES, FR, DE, PT, IT, ZH, JA, KO, AR, RU |
+| 🎛️ **Controls** | DPI slider (150–600) & PSM mode (0–13) |
+| 📤 **Output** | Copyable text · live stats · `.txt` download |
+| 🆓 **Token** | Not needed — works fully offline |
 
-### 🔹 Tab 2 — Smart Extract (Vision LLM)
-| Feature | Detail |
-|---------|--------|
-| **Models** | [Qwen2-VL-7B](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct) · [Llama-3.2-11B-Vision](https://huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct) |
-| **Input** | Images & PDFs (first page only) |
-| **Custom prompt** | Optional — replace the default extraction instructions |
-| **Output** | Copyable text, stats, `.txt` download |
-| **Token?** | ✅ `HF_TOKEN` (free, read scope) |
+### 👁️ Tab 2 — Smart Extract (Vision LLM)
+| | |
+|---|---|
+| 🧠 **Models** | [Qwen2-VL-7B](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct) · [Llama-3.2-11B-Vision](https://huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct) |
+| 🖼️ **Input** | Images & PDFs (first page only) |
+| ✏️ **Custom prompt** | Optional — override default instructions |
+| 📤 **Output** | Copyable text · stats · `.txt` download |
+| 🔑 **Token** | `HF_TOKEN` required (free, read scope) |
 
-### 🔹 Tab 3 — Cleanup & Structure (Text LLM)
-| Feature | Detail |
-|---------|--------|
-| **Models** | [Qwen2.5-7B](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct) · [Mistral-7B](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3) · [Llama-3.1-8B](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) |
-| **Cleanup mode** | Fixes OCR typos, normalizes whitespace, preserves paragraphs |
-| **Structure mode** | Extracts JSON — supports **Summary**, **Invoice**, **Resume**, **Generic** schemas |
-| **Output** | Cleaned text or pretty-printed JSON, stats, download |
-| **Token?** | ✅ `HF_TOKEN` (free, read scope) |
+### ✍️ Tab 3 — Cleanup & Structure (Text LLM)
+| | |
+|---|---|
+| 🧠 **Models** | [Qwen2.5-7B](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct) · [Mistral-7B](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3) · [Llama-3.1-8B](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) |
+| 🧹 **Cleanup mode** | Fixes OCR typos, normalizes whitespace, preserves paragraphs |
+| 🏗️ **Structure mode** | Extracts JSON — **Summary**, **Invoice**, **Resume**, **Generic** schemas |
+| 📤 **Output** | Cleaned text or pretty-printed JSON · stats · download |
+| 🔑 **Token** | `HF_TOKEN` required (free, read scope) |
 
 ### 🧩 Bonus
-- 🔗 **Cross-tab linking** — Vision LLM output can be sent directly to Cleanup & Structure
-- 📊 **Live stats** — character count, word count, model used, page count
-- 📥 **One-click download** — `.txt` or `.json` with auto-detected suffix
-- 🎨 **Clean UI** — Gradio Soft theme with indigo accent
+| | |
+|---|---|
+| 🔗 **Cross-tab linking** | Send Vision LLM output straight to Cleanup & Structure |
+| 📊 **Live stats** | Character count, word count, model used, page count |
+| 📥 **One-click download** | `.txt` or `.json` with auto-detected suffix |
+| 🎨 **Clean UI** | Gradio Soft theme with indigo accent |
 
 ---
 
