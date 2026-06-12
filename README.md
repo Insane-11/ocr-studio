@@ -8,6 +8,7 @@ app_port: 7860
 app_file: app.py
 pinned: false
 license: mit
+short_description: Free OCR, vision-LLM extraction, and text-LLM cleanup in a single Gradio app — no paid APIs.
 ---
 
 <div align="center">
@@ -16,7 +17,9 @@ license: mit
 
 **Free OCR + AI extraction — no paid APIs.**
 
-[![Live Demo](https://img.shields.io/badge/Live_on_Spaces-📄-brightgreen?style=for-the-badge&logo=huggingface)](https://insane-11-ocr-studio.hf.space)
+**🔗 [https://insane-11-ocr-studio.hf.space](https://insane-11-ocr-studio.hf.space)**
+
+[![Live Demo](https://img.shields.io/badge/Try_on_Spaces-📄-brightgreen?style=for-the-badge&logo=huggingface)](https://insane-11-ocr-studio.hf.space)
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)]()
 [![Gradio 4.44](https://img.shields.io/badge/Gradio-4.44.1-indigo?logo=python&logoColor=white)]()
 [![Tesseract](https://img.shields.io/badge/Tesseract-OCR-red?logo=tesseract&logoColor=white)]()
@@ -24,17 +27,6 @@ license: mit
 [![Docker](https://img.shields.io/badge/SDK-Docker-2496ED?logo=docker&logoColor=white)]()
 
 </div>
-
----
-
-Three OCR modes in one sleek interface — from fast offline Tesseract to vision-language models for tricky layouts, plus AI cleanup and structured JSON extraction.
-
-## 🚀 Live Demo
-
-| Platform | URL |
-|----------|-----|
-| 🏠 **Hugging Face Space** | [https://huggingface.co/spaces/Insane-11/ocr-studio](https://huggingface.co/spaces/Insane-11/ocr-studio) |
-| ⚡ **Direct link** | [https://insane-11-ocr-studio.hf.space](https://insane-11-ocr-studio.hf.space) |
 
 > ⚠️ Free Spaces sleep after inactivity. First visit may take ~30s to wake up.
 
