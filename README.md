@@ -8,7 +8,7 @@ app_port: 7860
 app_file: app.py
 pinned: false
 license: mit
-short_description: Free OCR, vision-LLM extraction, and text-LLM cleanup in a single Gradio app — no paid APIs.
+short_description: OCR, vision-LLM, and text-LLM cleanup. No paid APIs.
 ---
 
 <div align="center">
