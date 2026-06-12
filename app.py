@@ -60,7 +60,7 @@ def file_kind(path):
 
 def image_b64(path):
     ext = Path(path).suffix.lower().lstrip(".") or "png"
-    mime = "image/jpeg" if ext in ("jpg", "jpeg") else f"image/{ext if ext != 'jpg' else 'jpeg'}"
+    mime = "image/jpeg" if ext in ("jpg", "jpeg") else f"image/{ext}"
     with open(path, "rb") as f:
         return f"data:{mime};base64,{base64.b64encode(f.read()).decode()}"
 
@@ -186,7 +186,7 @@ def vision_run(file_obj, model_label, custom_prompt, progress=gr.Progress()):
         return "", "**Status:** Empty response from model.", None
 
     progress(0.95, desc="Done")
-    suffix = "_vision.txt" if kind == "pdf" else "_vision.txt"
+    suffix = "_vision.txt"
     return text, stats_block(text, model=model, extra="(first page only for PDFs)"), write_temp(text, suffix)
 
 
@@ -385,7 +385,7 @@ with gr.Blocks(title="OCR Studio", theme=gr.themes.Soft(primary_hue="indigo"), c
     )
     token_banner = gr.Markdown(
         value=token_msg,
-        visible=bool(HF_TOKEN),
+        visible=True,
         elem_classes="token-banner ok" if HF_TOKEN else "token-banner",
     )
 

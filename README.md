@@ -3,8 +3,8 @@ title: OCR Studio
 emoji: 📄
 colorFrom: indigo
 colorTo: blue
-sdk: gradio
-sdk_version: 4.19.0
+sdk: docker
+app_port: 7860
 app_file: app.py
 pinned: false
 license: mit
@@ -47,7 +47,7 @@ Get a free token at `https://huggingface.co/settings/tokens` (Read scope is enou
 
 ## Deploy to Hugging Face Spaces (free)
 
-1. Create a Space at `https://huggingface.co/new-space` — SDK: **Gradio**, Hardware: **CPU basic**
+1. Create a Space at `https://huggingface.co/new-space` — SDK: **Docker**, Hardware: **CPU basic**
 2. Push:
 
 ```bash
