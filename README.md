@@ -1,6 +1,5 @@
 ---
 title: OCR Studio
-emoji: 🔍
 colorFrom: indigo
 colorTo: blue
 sdk: docker
