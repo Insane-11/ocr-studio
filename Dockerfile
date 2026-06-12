@@ -8,6 +8,17 @@ ENV PYTHONUNBUFFERED=1 \
 RUN apt-get update && apt-get install -y --no-install-recommends \
         tesseract-ocr \
         tesseract-ocr-eng \
+        tesseract-ocr-hin \
+        tesseract-ocr-spa \
+        tesseract-ocr-fra \
+        tesseract-ocr-deu \
+        tesseract-ocr-por \
+        tesseract-ocr-ita \
+        tesseract-ocr-chi-sim \
+        tesseract-ocr-jpn \
+        tesseract-ocr-kor \
+        tesseract-ocr-ara \
+        tesseract-ocr-rus \
         poppler-utils \
         git \
         ca-certificates \

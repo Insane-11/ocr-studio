@@ -24,8 +24,8 @@ TEXT_MODELS = {
     "Mistral-7B-Instruct-v0.3": "mistralai/Mistral-7B-Instruct-v0.3",
     "Llama-3.1-8B-Instruct": "meta-llama/Llama-3.1-8B-Instruct",
 }
-DEFAULT_VISION = "Qwen/Qwen2-VL-7B-Instruct"
-DEFAULT_TEXT = "Qwen/Qwen2.5-7B-Instruct"
+DEFAULT_VISION_KEY = "Qwen2-VL-7B-Instruct"
+DEFAULT_TEXT_KEY = "Qwen2.5-7B-Instruct"
 
 LANG_MAP = {
     "English": "eng",
@@ -146,7 +146,7 @@ def vision_run(file_obj, model_label, custom_prompt, progress=gr.Progress()):
     if kind == "unknown":
         return "", "**Status:** Unsupported file type.", None
 
-    model = VISION_MODELS.get(model_label, DEFAULT_VISION)
+    model = VISION_MODELS.get(model_label, VISION_MODELS.get(DEFAULT_VISION_KEY))
     progress(0.15, desc="Encoding image...")
     try:
         if kind == "pdf":
@@ -196,7 +196,7 @@ def llm_clean(raw_text, model_label, custom_instr, progress=gr.Progress()):
     if not HF_TOKEN:
         return "", "**Status:** `HF_TOKEN` is not set.", None
 
-    model = TEXT_MODELS.get(model_label, DEFAULT_TEXT)
+    model = TEXT_MODELS.get(model_label, TEXT_MODELS.get(DEFAULT_TEXT_KEY))
     instr = (custom_instr or "").strip() or (
         "Clean this OCR output: fix obvious character errors, normalize whitespace, "
         "preserve paragraph breaks, do not summarize or rephrase. Return only the cleaned text."
@@ -254,14 +254,66 @@ STRUCTURE_SCHEMAS = {
 
 
 def extract_json_block(text):
-    fenced = re.search(r"```(?:json)?\s*(\{.*?\}|\[.*?\])\s*```", text, re.DOTALL)
+    fenced = re.search(r"```(?:json)?\s*", text)
     if fenced:
-        return fenced.group(1)
+        start = fenced.end()
+        remainder = text[start:]
+        match = _balanced_json(remainder)
+        if match:
+            return match
     start = text.find("{")
-    end = text.rfind("}")
-    if start != -1 and end != -1 and end > start:
-        return text[start:end + 1]
+    if start != -1:
+        match = _balanced_json(text[start:])
+        if match:
+            return match
+    start = text.find("[")
+    if start != -1:
+        match = _balanced_json(text[start:])
+        if match:
+            return match
     return text
+
+
+def _balanced_json(s):
+    brace_depth = 0
+    bracket_depth = 0
+    in_str = False
+    escape = False
+    for i, ch in enumerate(s):
+        if escape:
+            escape = False
+            continue
+        if ch == "\\" and in_str:
+            escape = True
+            continue
+        if ch == '"' and not escape:
+            in_str = not in_str
+            continue
+        if in_str:
+            continue
+        if ch == "{":
+            brace_depth += 1
+        elif ch == "}":
+            brace_depth -= 1
+            if brace_depth < 0:
+                return None
+        elif ch == "[":
+            bracket_depth += 1
+        elif ch == "]":
+            bracket_depth -= 1
+            if bracket_depth < 0:
+                return None
+        if ch == "`" and not in_str:
+            if s[i:i+3] == "```":
+                return s[:i]
+        if brace_depth == 0 and bracket_depth == 0 and i > 0:
+            candidate = s[:i+1]
+            try:
+                json.loads(candidate)
+                return candidate
+            except json.JSONDecodeError:
+                return None
+    return None
 
 
 def llm_structure(raw_text, schema_label, model_label, progress=gr.Progress()):
@@ -270,7 +322,7 @@ def llm_structure(raw_text, schema_label, model_label, progress=gr.Progress()):
     if not HF_TOKEN:
         return "", "**Status:** `HF_TOKEN` is not set.", None
 
-    model = TEXT_MODELS.get(model_label, DEFAULT_TEXT)
+    model = TEXT_MODELS.get(model_label, TEXT_MODELS.get(DEFAULT_TEXT_KEY))
     schema_instr = STRUCTURE_SCHEMAS.get(schema_label, STRUCTURE_SCHEMAS["Summary + Key Points"])
     snippet = raw_text[:6500]
 
@@ -323,17 +375,19 @@ with gr.Blocks(title="OCR Studio", theme=gr.themes.Soft(primary_hue="indigo"), c
         "and LLM cleanup & structured output. No paid APIs."
     )
 
-    token_banner = gr.Markdown(
-        visible=bool(HF_TOKEN),
-        elem_classes="token-banner ok" if HF_TOKEN else "token-banner",
-    )
-    if HF_TOKEN:
-        token_banner.value = "**HF_TOKEN detected** — Vision LLM and Text LLM tabs are enabled."
-    else:
-        token_banner.value = (
+    token_msg = (
+        "**HF_TOKEN detected** — Vision LLM and Text LLM tabs are enabled."
+        if HF_TOKEN
+        else (
             "**HF_TOKEN not set** — Tab 1 (Tesseract) works without it. "
             "Add `HF_TOKEN` in **Space Settings → Variables and secrets** to enable Tabs 2 and 3."
         )
+    )
+    token_banner = gr.Markdown(
+        value=token_msg,
+        visible=bool(HF_TOKEN),
+        elem_classes="token-banner ok" if HF_TOKEN else "token-banner",
+    )
 
     with gr.Tabs():
         with gr.Tab("Quick OCR · Tesseract"):
@@ -387,9 +441,7 @@ with gr.Blocks(title="OCR Studio", theme=gr.themes.Soft(primary_hue="indigo"), c
                     send2 = gr.Button("Send to Cleanup & Structure →")
 
             run2.click(vision_run, [f2, mdl2, pr2], [out2, stat2, dl2])
-            clr2.click(lambda: ("", "**Status:** Ready", None, None, None), outputs=[out2, stat2, f2, dl2])
-
-            send2.click(lambda txt: txt or "", inputs=[out2], outputs=[t_in3])
+            clr2.click(lambda: ("", "**Status:** Ready", None, None), outputs=[out2, stat2, f2, dl2])
 
         with gr.Tab("Cleanup & Structure · Text LLM"):
             with gr.Row():
@@ -425,6 +477,8 @@ with gr.Blocks(title="OCR Studio", theme=gr.themes.Soft(primary_hue="indigo"), c
             run3a.click(llm_clean, [t_in3, mdl3, instr3], [out3, stat3, dl3])
             run3b.click(llm_structure, [t_in3, schema3, mdl3], [out3, stat3, dl3])
             clr3.click(lambda: ("", "**Status:** Ready", "", None), outputs=[t_in3, stat3, out3, dl3])
+
+    send2.click(lambda txt: txt or "", inputs=[out2], outputs=[t_in3])
 
     gr.Markdown(
         "<div class='footer'>Gradio · Tesseract · Hugging Face Inference API · "
