@@ -12,6 +12,20 @@ from pdf2image import convert_from_path
 from PIL import Image
 from huggingface_hub import InferenceClient
 
+# Patch gradio-client bug: _json_schema_to_python_type crashes on bool schemas
+import gradio_client.utils as _gcu
+
+_orig_schema_fn = _gcu._json_schema_to_python_type
+
+
+def _safe_schema(schema, defs):
+    if isinstance(schema, bool):
+        return "Any"
+    return _orig_schema_fn(schema, defs)
+
+
+_gcu._json_schema_to_python_type = _safe_schema
+
 
 HF_TOKEN = os.environ.get("HF_TOKEN", "").strip()
 
