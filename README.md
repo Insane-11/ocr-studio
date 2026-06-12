@@ -10,64 +10,157 @@ pinned: false
 license: mit
 ---
 
-# OCR Studio
+<div align="center">
 
-Free OCR + AI extraction in a single Gradio app. Three modes: Tesseract, vision-LLM, and LLM cleanup + structured output. No paid APIs.
+# 📄 OCR Studio
 
-## Features
+**Free OCR + AI extraction — no paid APIs.**
 
-- **Quick OCR** — Tesseract for images and multi-page PDFs, 12 languages, adjustable DPI/PSM
-- **Smart Extract** — Vision LLM (Qwen2-VL / Llama-3.2-Vision) via free Hugging Face Inference API
-- **Cleanup & Structure** — Text LLM (Qwen2.5 / Mistral / Llama) for OCR cleanup and JSON extraction (summary, invoice, resume, generic)
-- One-click `.txt` / `.json` download, live stats, copy buttons, clean Soft-themed UI
+[![Live Demo](https://img.shields.io/badge/Live_on_Spaces-📄-brightgreen?style=for-the-badge&logo=huggingface)](https://insane-11-ocr-studio.hf.space)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)]()
+[![Gradio 4.44](https://img.shields.io/badge/Gradio-4.44.1-indigo?logo=python&logoColor=white)]()
+[![Tesseract](https://img.shields.io/badge/Tesseract-OCR-red?logo=tesseract&logoColor=white)]()
+[![License](https://img.shields.io/badge/License-MIT-green)]()
+[![Docker](https://img.shields.io/badge/SDK-Docker-2496ED?logo=docker&logoColor=white)]()
 
-## Stack
+</div>
 
-Gradio · Tesseract (`pytesseract`) · `pdf2image` (Poppler) · `huggingface-hub` InferenceClient
+---
 
-## Run locally
+Three OCR modes in one sleek interface — from fast offline Tesseract to vision-language models for tricky layouts, plus AI cleanup and structured JSON extraction.
 
-System deps (Tesseract + Poppler) — see `https://github.com/UB-Mannheim/tesseract/wiki` (Windows) or `brew install tesseract poppler` (macOS) or `apt install tesseract-ocr poppler-utils` (Linux).
+## 🚀 Live Demo
+
+| Platform | URL |
+|----------|-----|
+| 🏠 **Hugging Face Space** | [https://huggingface.co/spaces/Insane-11/ocr-studio](https://huggingface.co/spaces/Insane-11/ocr-studio) |
+| ⚡ **Direct link** | [https://insane-11-ocr-studio.hf.space](https://insane-11-ocr-studio.hf.space) |
+
+> ⚠️ Free Spaces sleep after inactivity. First visit may take ~30s to wake up.
+
+---
+
+## ✨ Features
+
+### 🔹 Tab 1 — Quick OCR (Tesseract)
+| Feature | Detail |
+|---------|--------|
+| **Input** | Images (PNG, JPG, BMP, TIFF, WebP) & multi-page PDFs |
+| **Languages** | 12 supported — EN, HI, ES, FR, DE, PT, IT, ZH, JA, KO, AR, RU |
+| **Controls** | DPI slider (150–600) & PSM mode (0–13) for fine-tuning |
+| **Output** | Copyable text, live stats (pages/chars/words), `.txt` download |
+| **Token?** | ❌ Not required — works fully offline |
+
+### 🔹 Tab 2 — Smart Extract (Vision LLM)
+| Feature | Detail |
+|---------|--------|
+| **Models** | [Qwen2-VL-7B](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct) · [Llama-3.2-11B-Vision](https://huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct) |
+| **Input** | Images & PDFs (first page only) |
+| **Custom prompt** | Optional — replace the default extraction instructions |
+| **Output** | Copyable text, stats, `.txt` download |
+| **Token?** | ✅ `HF_TOKEN` (free, read scope) |
+
+### 🔹 Tab 3 — Cleanup & Structure (Text LLM)
+| Feature | Detail |
+|---------|--------|
+| **Models** | [Qwen2.5-7B](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct) · [Mistral-7B](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3) · [Llama-3.1-8B](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) |
+| **Cleanup mode** | Fixes OCR typos, normalizes whitespace, preserves paragraphs |
+| **Structure mode** | Extracts JSON — supports **Summary**, **Invoice**, **Resume**, **Generic** schemas |
+| **Output** | Cleaned text or pretty-printed JSON, stats, download |
+| **Token?** | ✅ `HF_TOKEN` (free, read scope) |
+
+### 🧩 Bonus
+- 🔗 **Cross-tab linking** — Vision LLM output can be sent directly to Cleanup & Structure
+- 📊 **Live stats** — character count, word count, model used, page count
+- 📥 **One-click download** — `.txt` or `.json` with auto-detected suffix
+- 🎨 **Clean UI** — Gradio Soft theme with indigo accent
+
+---
+
+## 🏗️ Stack
+
+```
+Gradio 4.44.1   →  Web interface
+Tesseract       →  Offline OCR engine (12 language packs)
+pdf2image       →  PDF rasterization (Poppler)
+huggingface-hub →  Free Inference API for LLMs
+Docker          →  Deployment (Python 3.12-slim)
+```
+
+---
+
+## 🖥️ Run Locally
+
+### 1. System dependencies
+
+| OS | Command |
+|----|---------|
+| **Windows** | Download from [UB-Mannheim/tesseract](https://github.com/UB-Mannheim/tesseract/wiki) + [Poppler](https://github.com/oschwartz10612/poppler-windows/releases) |
+| **macOS** | `brew install tesseract poppler` |
+| **Linux** | `sudo apt install tesseract-ocr poppler-utils` |
+
+> For 12-language Tesseract support on Linux: `sudo apt install tesseract-ocr-all`
+
+### 2. Python setup
 
 ```bash
 git clone https://github.com/Insane-11/ocr-studio.git
 cd ocr-studio
-python -m venv .venv && source .venv/bin/activate
+python -m venv .venv
+.venv\Scripts\activate     # Windows
+# source .venv/bin/activate  # macOS/Linux
 pip install -r requirements.txt
 python app.py
 ```
 
-Tab 1 works without any token. For Tabs 2 and 3, set `HF_TOKEN` in your shell:
+Open `http://localhost:7860` in your browser.
+
+### 3. Token setup (optional — needed for Tabs 2 & 3)
 
 ```bash
+# Windows (PowerShell)
+$env:HF_TOKEN="hf_xxxxxxxxxxxxxxxxxxxx"
+
+# macOS / Linux
 export HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxx
 ```
 
-Get a free token at `https://huggingface.co/settings/tokens` (Read scope is enough).
+Get a free token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) (read scope is enough).
 
-## Deploy to Hugging Face Spaces (free)
+---
 
-1. Create a Space at `https://huggingface.co/new-space` — SDK: **Docker**, Hardware: **CPU basic**
-2. Push:
+## ☁️ Deploy to Hugging Face Spaces
 
-```bash
-git remote add space https://huggingface.co/spaces/Insane-11/ocr-studio
-git push space main
-```
+One-click deploy — no credit card required.
 
-3. Add your HF token: Space → **Settings** → **Variables and secrets** → New secret:
+1. **Create a Space** at [huggingface.co/new-space](https://huggingface.co/new-space) — set SDK to **Docker**, Hardware to **CPU basic**
+
+2. **Push the code:**
+
+   ```bash
+   git remote add space https://huggingface.co/spaces/YOUR_USERNAME/ocr-studio
+   git push space main
+   ```
+
+3. **Add your token:** Space → **Settings** → **Variables and secrets** → New secret:
    - Name: `HF_TOKEN`
    - Value: `hf_xxxxxxxxxxxxxxxxxxxx`
    - Visibility: can be hidden
 
-4. Live URL: [`https://huggingface.co/spaces/Insane-11/ocr-studio`](https://huggingface.co/spaces/Insane-11/ocr-studio) (direct: [`https://insane-11-ocr-studio.hf.space`](https://insane-11-ocr-studio.hf.space))
+4. **Done!** Visit `https://huggingface.co/spaces/YOUR_USERNAME/ocr-studio`
 
-## Notes
+---
 
-- Vision LLM tab uses page 1 of PDFs only (token cost + inference time).
-- Free Inference API has rate limits — fine for demos, not for production traffic.
-- All processing is server-side on HF Spaces; uploaded files are not stored.
+## ⚠️ Notes & Limitations
 
-## License
+- **Vision LLM + PDFs** — only page 1 is processed (token cost & inference time)
+- **Free Inference API** — has rate limits; suitable for demos, not production traffic
+- **Privacy** — all processing runs on HF Spaces servers; uploaded files are not stored
+- **Cold start** — free Spaces sleep after ~48h of inactivity; first visit wakes it (~30s)
+- **Compute hours** — free tier has a monthly cap; if exceeded, the Space sleeps until next month
 
-MIT
+---
+
+## 📄 License
+
+[MIT](LICENSE) — free to use, modify, and distribute.
