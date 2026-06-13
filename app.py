@@ -63,6 +63,10 @@ def client():
     return InferenceClient(token=HF_TOKEN or None)
 
 
+def vision_client():
+    return InferenceClient(token=HF_TOKEN or None, provider="hf-inference")
+
+
 def file_kind(path):
     ext = Path(path).suffix.lower()
     if ext in IMG_EXT:
@@ -180,7 +184,7 @@ def vision_run(file_obj, model_label, custom_prompt, progress=gr.Progress()):
 
     progress(0.35, desc=f"Calling {model}...")
     try:
-        completion = client().chat.completions.create(
+        completion = vision_client().chat.completions.create(
             model=model,
             messages=[{
                 "role": "user",
@@ -191,6 +195,7 @@ def vision_run(file_obj, model_label, custom_prompt, progress=gr.Progress()):
             }],
             max_tokens=2048,
             temperature=0.0,
+            extra_body={"options": {"wait_for_model": True}},
         )
         text = (completion.choices[0].message.content or "").strip()
     except Exception as e:
